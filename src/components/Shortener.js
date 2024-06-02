@@ -9,6 +9,7 @@ function Shortener() {
     const [shortUrl, setShortUrl] = useState('');
     const [copied, setCopied] = useState(false);
     const [urlHistory, setUrlHistory] = useState([]);
+    const [loder, setLoder] = useState(false);
 
     useEffect(() => {
         const storedHistory = localStorage.getItem('urlHistory');
@@ -28,7 +29,8 @@ function Shortener() {
 
         const formatedUrl = /^(https?|ftp):\/\//i.test(url) ? url : `http://${url}`;
 
-        try {
+        const fetchShorterURL = async() => {
+            setLoder(true);
             const response = await axios.post(
                 apiUrl,
                 { long_url: formatedUrl },
@@ -39,7 +41,7 @@ function Shortener() {
                     }
                 }
             );
-
+            setLoder(false);
             const shortenedUrl = response.data.link;
             setShortUrl(shortenedUrl);
 
@@ -52,6 +54,32 @@ function Shortener() {
             const updatedHistory = [historyItem, ...urlHistory];
             setUrlHistory(updatedHistory);
             localStorage.setItem('urlHistory', JSON.stringify(updatedHistory));
+        }
+        try {
+            // const response = await axios.post(
+            //     apiUrl,
+            //     { long_url: formatedUrl },
+            //     {
+            //         headers: {
+            //             Authorization: `Bearer ${accessToken}`,
+            //             'Content-Type': 'application/json'
+            //         }
+            //     }
+            // );
+            fetchShorterURL();
+
+            // const shortenedUrl = response.data.link;
+            // setShortUrl(shortenedUrl);
+
+            // const historyItem = {
+            //     originalUrl: url,
+            //     shortUrl: shortenedUrl,
+            //     createdAt: new Date().toISOString(),
+            // };
+
+            // const updatedHistory = [historyItem, ...urlHistory];
+            // setUrlHistory(updatedHistory);
+            // localStorage.setItem('urlHistory', JSON.stringify(updatedHistory));
         } catch (e) {
             console.error(e);
         }
@@ -70,6 +98,7 @@ function Shortener() {
             <InputForm onSubmit={handleSubmit} />
             {shortUrl && <ShortenedUrl url={shortUrl} onCopy={handleCopy} />}
             {copied && <p className="copy-message">URL copied to clipboard!</p>}
+            {loder && <p>Loding...</p>}
             {urlHistory.length > 0 && <URLHistory history={urlHistory} onClearHistory={handleClearHistory} />}
         </div>
     )
