@@ -14,9 +14,9 @@ Deployed [check out!](https://url-shortener-bitlyapi.netlify.app)
 
 **!!!** BItly provides limited API call per month
 
-###### How to run in local?
+#### How to run in local?
 
 * Just clone the github repo
 * Change direactory to the root folder
-* Install pre-requircit `npm install`
+* Install pre-requirement `npm install`
 * Run the code `npm start`
