@@ -3,6 +3,7 @@ import axios from 'axios';
 import InputForm from './InputForm';
 import ShortenedUrl from './ShortenedUrl';
 import URLHistory from './UrlHistory';
+import { InfinitySpin } from 'react-loader-spinner'
 
 function Shortener() {
 
@@ -98,7 +99,13 @@ function Shortener() {
             <InputForm onSubmit={handleSubmit} />
             {shortUrl && <ShortenedUrl url={shortUrl} onCopy={handleCopy} />}
             {copied && <p className="copy-message">URL copied to clipboard!</p>}
-            {loder && <p>Loding...</p>}
+            {loder && 
+                <InfinitySpin
+                    visible={true}
+                    width="100"
+                    color="#4fa94d"
+                    ariaLabel="infinity-spin-loading"
+                />}
             {urlHistory.length > 0 && <URLHistory history={urlHistory} onClearHistory={handleClearHistory} />}
         </div>
     )
