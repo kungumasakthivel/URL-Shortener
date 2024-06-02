@@ -55,32 +55,10 @@ function Shortener() {
             const updatedHistory = [historyItem, ...urlHistory];
             setUrlHistory(updatedHistory);
             localStorage.setItem('urlHistory', JSON.stringify(updatedHistory));
-        }
+        };
+
         try {
-            // const response = await axios.post(
-            //     apiUrl,
-            //     { long_url: formatedUrl },
-            //     {
-            //         headers: {
-            //             Authorization: `Bearer ${accessToken}`,
-            //             'Content-Type': 'application/json'
-            //         }
-            //     }
-            // );
             fetchShorterURL();
-
-            // const shortenedUrl = response.data.link;
-            // setShortUrl(shortenedUrl);
-
-            // const historyItem = {
-            //     originalUrl: url,
-            //     shortUrl: shortenedUrl,
-            //     createdAt: new Date().toISOString(),
-            // };
-
-            // const updatedHistory = [historyItem, ...urlHistory];
-            // setUrlHistory(updatedHistory);
-            // localStorage.setItem('urlHistory', JSON.stringify(updatedHistory));
         } catch (e) {
             console.error(e);
         }
