@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import InputForm from './InputForm';
 import ShortenedUrl from './ShortenedUrl';
+import URLHistory from './UrlHistory';
 
 function Shortener() {
 
@@ -9,22 +10,35 @@ function Shortener() {
     const [copied, setCopied] = useState(false);
     const [urlHistory, setUrlHistory] = useState([]);
 
+    useEffect(() => {
+        const storedHistory = localStorage.getItem('urlHistory');
+        if(storedHistory) {
+            setUrlHistory(JSON.parse(storedHistory));
+        }
+    }, []);
+
+    const handleClearHistory = () => {
+        setUrlHistory([]);
+        localStorage.removeItem('urlHistory');
+    }
+
     const handleSubmit = async (url) => {
-        const accessToken = `access_token`;
+        const accessToken = `c5eeb44c39d84b9bbc5acff35b3361a3dde40abf`;
         const apiUrl = 'https://api-ssl.bitly.com/v4/shorten';
 
-        const formatedUrl = /^(https?|ftp):\/\//i.test(url) ? url: `http://${url}`;
+        const formatedUrl = /^(https?|ftp):\/\//i.test(url) ? url : `http://${url}`;
+
         try {
             const response = await axios.post(
                 apiUrl,
-                {long_url: formatedUrl},
+                { long_url: formatedUrl },
                 {
                     headers: {
-                        Authorization: `Bearer  + ${accessToken}`,
+                        Authorization: `Bearer ${accessToken}`,
                         'Content-Type': 'application/json'
                     }
                 }
-            )
+            );
 
             const shortenedUrl = response.data.link;
             setShortUrl(shortenedUrl);
@@ -38,10 +52,10 @@ function Shortener() {
             const updatedHistory = [historyItem, ...urlHistory];
             setUrlHistory(updatedHistory);
             localStorage.setItem('urlHistory', JSON.stringify(updatedHistory));
-        } catch(e) {
+        } catch (e) {
             console.error(e);
-        };
-    }
+        }
+    };
 
     const handleCopy = () => {
         setCopied(true);
@@ -56,6 +70,7 @@ function Shortener() {
             <InputForm onSubmit={handleSubmit} />
             {shortUrl && <ShortenedUrl url={shortUrl} onCopy={handleCopy} />}
             {copied && <p className="copy-message">URL copied to clipboard!</p>}
+            {urlHistory.length > 0 && <URLHistory history={urlHistory} onClearHistory={handleClearHistory} />}
         </div>
     )
 }
