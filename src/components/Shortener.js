@@ -78,12 +78,15 @@ function Shortener() {
             {shortUrl && <ShortenedUrl url={shortUrl} onCopy={handleCopy} />}
             {copied && <p className="copy-message">URL copied to clipboard!</p>}
             {loder && 
-                <InfinitySpin
+                <div className='loader'>
+                    <InfinitySpin
                     visible={true}
                     width="100"
-                    color="#4fa94d"
+                    color="#eb144c"
                     ariaLabel="infinity-spin-loading"
-                />}
+                    />
+                </div>
+            }
             {urlHistory.length > 0 && <URLHistory history={urlHistory} onClearHistory={handleClearHistory} />}
         </div>
     )
