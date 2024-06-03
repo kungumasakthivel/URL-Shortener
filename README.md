@@ -10,7 +10,7 @@ Here I developed this webpage using React with Bitly API to shorten the URL. So 
 
 These packages are used to enhance the web-page functionality.
 
-Deployed [check out!](https://url-shortener-bitlyapi.netlify.app)
+Deployed [check out!](https://url-shortener-bitlyapi.netlify.app) - used Netlify to host.
 
 **!!!** BItly provides limited API call per month
 
